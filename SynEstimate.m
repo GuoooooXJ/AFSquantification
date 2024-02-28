@@ -1,8 +1,28 @@
-function [t,cfs,thrs,Metric] = SynEstimate(time,signal,fs,layerNum,basis,frequencyBand)
-% Compute SWT coefficients sequence
+function [t,cfs,Metric] = SynEstimate(time,signal,fs,layerNum,basis,frequencyBand)
+%AFS quantification using staionary wavelet transform.
+%   Use as:
+%       [t,cfs,Metric] = SynEstimate(time,signal,fs,layerNum,basis,frequencyBand)
+%   Input:
+%       - time, original time
+%       - signal, raw signal(after 2-90hz filtering is supposed)
+%       - fs, sampling rate of raw signal(384 in this study)
+%       - layerNum, decomposition layer number of staionary wavelet
+%       transform(6 in this study)
+%       - basis, wavelet function('sym8' in this study)
+%       - frequencyBand, jth layer in decomposition(4 in this study is low beta band)
+%   Output:
+%       - t, cutted time
+%       - cfs, stationary wavelet coefficients
+%       - Metric, AFS quantification sequence
+%
+%
+%   Author   : Xuanjun Guo
+%   Created  : Jan 30, 2024
+%   Modified : Feb 1, 2024
+
+
+%% Compute SWT coefficients sequence
 [swa,swd] = swt(signal,layerNum,basis);
-%swd = swd(:,fs:end-fs);
-%time = time(:,fs:end-fs);
 
 windowlength = 0.6;%Total /s
 %windowlength = 0.28;%Shorter /s
@@ -13,7 +33,7 @@ Signal = swd(frequencyBand,:);
 nStepThrs = ceil(thrswin/step);
 nStepTemp = ceil((thrswin/2-step/2)/step);
     
-% Detect synchronization state
+%% Detect synchronization state
 startPointThrs = nStepThrs*step + 1;
 startPointTemp = nStepTemp*step + 1;
 endPoint = startPointTemp + step - 1;

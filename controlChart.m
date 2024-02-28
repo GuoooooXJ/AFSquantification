@@ -1,4 +1,17 @@
 function [cfsThrsOut] = controlChart(cfsThrs)
+%%%Control chart to remove outliers
+%   Use as:
+%       [cfsThrsOut] = controlChart(cfsThrs)
+%   Input:
+%       - cfsThrs, original coefficients sequence
+%   Output:
+%       - cfsThrsOut, coefficients sequence without outliers
+%
+%
+%   Author   : Xuanjun Guo
+%   Created  : Jan 30, 2024
+%   Modified : Feb 1, 2024
+
 % Control chart
     flag = 0;
     ControlChartNumber = 0;
